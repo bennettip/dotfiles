@@ -1,62 +1,55 @@
 #
-# ~/.zshrc
+# ~/.bashrc
 #
 
-# ~/.zshrc {
-# Use modern completion system
-autoload -Uz compinit
-compinit
-
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-# }
-
 # ~/.bashrc {
-# Change the window title of X terminals
-precmd () {print -Pn "\e]0;%n@%m:%~\a"}
-# }
+# If not running interactively, don't do anything
+#case $- in
+#    *i*) ;;
+#      *) return;;
+#esac
 
-# rc/zshrc {
-# HISTORY
-# number of lines kept in history
-export HISTSIZE=10000
-# number of lines saved in the history after logout
-export SAVEHIST=10000
-# location of history
-export HISTFILE=~/.zhistory
-# append command to history file once executed
-setopt APPEND_HISTORY
-# remove copies of lines in the history list and keep the newly added one
-setopt HIST_IGNORE_ALL_DUPS
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=10000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# Change the window title of X terminals
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
 # }
 
 # bash_profile_course {
+# Enable tab completion
+source ~/.dotfiles/plugins/git/contrib/completion/git-completion.bash
+
+# colors!
+yellow="\[\033[0;33m\]"
+cyan="\[\033[0;36m\]"
+purple="\[\033[0;35m\]"
+reset="\[\033[0m\]"
+
 # Change command prompt
 source ~/.dotfiles/plugins/git/contrib/completion/git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
-# '%n' adds the name of the current user to the prompt
-# '$(__git_ps1 " (%s)")' adds git-related stuff
-# '%1~' adds the name of the current directory
-setopt PROMPT_SUBST
-PS1='%F{magenta}%n%F{yellow}$(__git_ps1 " (%s)") %F{cyan}%1~ %f%# '
+# '\u' adds the name of the current user to the prompt
+# '\$(__git_ps1)' adds git-related stuff
+# '\W' adds the name of the current directory
+export PS1="$purple\u$yellow\$(__git_ps1)$cyan \W$reset $ "
 # }
 
 #---------------------------------------------------------------------------
 # ALIASES AND FUNCTIONS
 #---------------------------------------------------------------------------
-
 alias ls='ls --color=auto'
 alias cp='cp -i --reflink=always'   # confirm before overwriting something
 alias mv='mv -i'
@@ -118,15 +111,9 @@ eval "$(tmuxifier init -)"
 
 # ------- fzf
 # enable fzf keybindings
-source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/key-bindings.bash
 # enable fuzzy auto-completion
-source /usr/share/doc/fzf/examples/completion.zsh
-
-# ------- command-not-found
-. /etc/zsh_command_not_found
-
-# ------- zsh-autosuggestions
-source ~/.dotfiles/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/doc/fzf/examples/completion.bash
 
 # ------- fasd
 path_prepend "$HOME/.dotfiles/plugins/fasd"
@@ -138,29 +125,7 @@ alias jj='fasd_cd -d -i'
 #---------------------------------------------------------------------------
 # CUSTOM SETTINGS
 #---------------------------------------------------------------------------
-
-# vi key binding
-bindkey '^R' history-incremental-search-backward
-export EDITOR=vim
-bindkey -v
-
-# change cursor shape in different modes
-function zle-keymap-select zle-line-init zle-line-finish {
-    case $KEYMAP in
-        vicmd)
-            print -n '\e[1 q' # block cursor
-            ;;
-        viins|main)
-            print -n '\e[5 q' # line cursor
-            ;;
-    esac
-}
-zle -N zle-line-init
-zle -N zle-line-finish
-zle -N zle-keymap-select
-
-# reduce wait time after Esc
-KEYTIMEOUT=1
+complete -cf sudo
 
 export LS_COLORS="di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 

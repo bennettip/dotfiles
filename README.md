@@ -1,23 +1,22 @@
-vgod's rc files
+dotfiles
 ===============
-
-Author: Tsung-Hsiang (Sean) Chang <vgod@vgod.tw>
-
-Fork me on GITHUB  https://github.com/vgod/rc.
 
 ONE-STEP INSTALL
 ----------------
 
-Use curl (for Mac OS X):
+Use curl:
 
-     curl -o - https://raw.githubusercontent.com/vgod/rc/master/auto-install.sh | sh
+```sh
+curl -o - https://raw.githubusercontent.com/bennettip/dotfiles/master/auto-install.sh | sh
+```
 
-or wget (for most UNIX platforms):
+or wget:
 
-     wget -O - https://raw.githubusercontent.com/vgod/rc/master/auto-install.sh | sh
+```sh
+wget -O - https://raw.githubusercontent.com/bennettip/dotfiles/master/auto-install.sh | sh
+```
 
 License
 -------
 
 This project is released under [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/deed.en_US).
-

@@ -1,9 +1,12 @@
-[submodule "oh-my-zsh"]
-	path = oh-my-zsh
-	url = git://github.com/vgod/oh-my-zsh.git
 [submodule "fasd"]
-	path = fasd
-	url = git@github.com:clvv/fasd.git
+	path = plugins/fasd
+	url = https://github.com/clvv/fasd.git
 [submodule "tmuxifier"]
-	path = tmuxifier
-	url = git@github.com:jimeh/tmuxifier.git
+	path = plugins/tmuxifier
+	url = https://github.com/jimeh/tmuxifier.git
+[submodule "plugins/git"]
+	path = plugins/git
+	url = https://github.com/git/git.git
+[submodule "plugins/zsh-autosuggestions"]
+	path = plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git

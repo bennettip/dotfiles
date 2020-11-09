@@ -1,5 +1,5 @@
 #!/bin/sh
-RCHOME=~/.rc
+DOTFILES_HOME=~/.dotfiles
 
 warn() {
     echo "$1" >&2
@@ -10,12 +10,19 @@ die() {
     exit 1
 }
 
-[ -e "~/.rc" ] && die "~/.rc already exists."
+for COMMAND in fzf vim command-not-found zsh tmux git; do
+    ! [ -x "$(command -v $COMMAND)" ] && die "Please install $COMMAND."
+done
 
-git clone git://github.com/vgod/rc.git "$RCHOME"
-cd "$RCHOME"
+[ -e "$DOTFILES_HOME" ] && die "$DOTFILES_HOME already exists."
+
+git clone https://github.com/bennettip/dotfiles.git "$DOTFILES_HOME"
+cd "$DOTFILES_HOME" || exit
 git submodule update --init
 
 ./install.sh
 
-echo "vgod's rc is installed."
+cd "$DOTFILES_HOME/plugins/fasd" || exit
+PREFIX="$DOTFILES_HOME/plugins/fasd" make install
+
+echo "dotfiles is installed."
